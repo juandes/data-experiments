@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import requests
 from datetime import datetime, timedelta, timezone
 from influxdb_client import InfluxDBClient, Point, WritePrecision
@@ -99,12 +100,23 @@ def write_to_influxdb(client, data):
 
 
 def main():
-    access_token = get_spotify_access_token()
+    if len(sys.argv) < 2:
+        print("Usage: main.py <job_execution_time_iso>")
+        sys.exit(1)
 
-    # Calculate "after" timestamp in ms for 1 hour ago.
-    one_hour_ago = datetime.now(tz=timezone.utc) - timedelta(hours=1)
-    after_ts_ms = int(one_hour_ago.timestamp() * 1000)
+    job_execution_str = sys.argv[1]
+    job_execution_dt = datetime.fromisoformat(
+        job_execution_str.replace("Z", "+00:00"))
+    one_hour_ago_dt = job_execution_dt - timedelta(hours=1)
+
+    print(f"Job execution time: {job_execution_dt.isoformat()}")
+    print(f"One hour ago: {one_hour_ago_dt.isoformat()}")
+
+    # Convert to epoch milliseconds if needed for Spotify's 'after' parameter:
+    after_ts_ms = int(one_hour_ago_dt.timestamp() * 1000)
     print(f"Fetching recently played after (1 hour ago): {after_ts_ms}")
+
+    access_token = get_spotify_access_token()
 
     # I'm not adding pagination because I don't expect to have played than 50 songs in an hour.
     data = fetch_recently_played(access_token, after_ts_ms)
