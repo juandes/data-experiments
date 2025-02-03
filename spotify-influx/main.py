@@ -73,6 +73,7 @@ def write_to_influxdb(client, data):
         duration_ms = track.get("duration_ms", 0)
         is_explicit = track.get("explicit", False)
         track_id = track.get("id", "Unknown")
+        popularity = track.get("popularity", 0)
 
         # Main artist (first in list).
         if track.get("artists"):
@@ -91,6 +92,7 @@ def write_to_influxdb(client, data):
             .field("main_artist_name", main_artist_name)
             .field("main_artist_id", main_artist_id)
             .field("album_name", album_name)
+            .field("popularity", popularity)
         )
         points.append(point)
 
