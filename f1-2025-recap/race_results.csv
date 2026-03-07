@@ -1,0 +1,25 @@
+round,race,country,date,circuit,winner,p2,p3,pole_position,winning_constructor,has_sprint
+1,Australian Grand Prix,Australia,2025-03-16,Albert Park Circuit,Lando Norris,Max Verstappen,George Russell,Lando Norris,McLaren-Mercedes,No
+2,Chinese Grand Prix,China,2025-03-23,Shanghai International Circuit,Oscar Piastri,Lando Norris,George Russell,Oscar Piastri,McLaren-Mercedes,Yes
+3,Japanese Grand Prix,Japan,2025-04-06,Suzuka Circuit,Max Verstappen,Lando Norris,Oscar Piastri,Max Verstappen,Red Bull-Honda RBPT,No
+4,Bahrain Grand Prix,Bahrain,2025-04-13,Bahrain International Circuit,Oscar Piastri,George Russell,Lando Norris,Oscar Piastri,McLaren-Mercedes,No
+5,Saudi Arabian Grand Prix,Saudi Arabia,2025-04-20,Jeddah Corniche Circuit,Oscar Piastri,Max Verstappen,Charles Leclerc,Max Verstappen,McLaren-Mercedes,No
+6,Miami Grand Prix,United States,2025-05-04,Miami International Autodrome,Oscar Piastri,Lando Norris,George Russell,Max Verstappen,McLaren-Mercedes,Yes
+7,Emilia Romagna Grand Prix,Italy,2025-05-18,Autodromo Enzo e Dino Ferrari,Max Verstappen,Lando Norris,Oscar Piastri,Oscar Piastri,Red Bull-Honda RBPT,No
+8,Monaco Grand Prix,Monaco,2025-05-25,Circuit de Monaco,Lando Norris,Charles Leclerc,Oscar Piastri,Lando Norris,McLaren-Mercedes,No
+9,Spanish Grand Prix,Spain,2025-06-01,Circuit de Barcelona-Catalunya,Oscar Piastri,Lando Norris,Charles Leclerc,Oscar Piastri,McLaren-Mercedes,No
+10,Canadian Grand Prix,Canada,2025-06-15,Circuit Gilles-Villeneuve,George Russell,Max Verstappen,Kimi Antonelli,George Russell,Mercedes,No
+11,Austrian Grand Prix,Austria,2025-06-29,Red Bull Ring,Lando Norris,Oscar Piastri,Charles Leclerc,Lando Norris,McLaren-Mercedes,No
+12,British Grand Prix,United Kingdom,2025-07-06,Silverstone Circuit,Lando Norris,Oscar Piastri,Nico Hülkenberg,Max Verstappen,McLaren-Mercedes,No
+13,Belgian Grand Prix,Belgium,2025-07-27,Circuit de Spa-Francorchamps,Oscar Piastri,Lando Norris,Charles Leclerc,Lando Norris,McLaren-Mercedes,Yes
+14,Hungarian Grand Prix,Hungary,2025-08-03,Hungaroring,Lando Norris,Oscar Piastri,George Russell,Charles Leclerc,McLaren-Mercedes,No
+15,Dutch Grand Prix,Netherlands,2025-08-31,Circuit Zandvoort,Oscar Piastri,Max Verstappen,Isack Hadjar,Oscar Piastri,McLaren-Mercedes,No
+16,Italian Grand Prix,Italy,2025-09-07,Autodromo Nazionale Monza,Max Verstappen,Lando Norris,Oscar Piastri,Max Verstappen,Red Bull-Honda RBPT,No
+17,Azerbaijan Grand Prix,Azerbaijan,2025-09-21,Baku City Circuit,Max Verstappen,George Russell,Carlos Sainz Jr.,Max Verstappen,Red Bull-Honda RBPT,No
+18,Singapore Grand Prix,Singapore,2025-10-05,Marina Bay Street Circuit,George Russell,Max Verstappen,Lando Norris,George Russell,Mercedes,No
+19,United States Grand Prix,United States,2025-10-19,Circuit of the Americas,Max Verstappen,Lando Norris,Charles Leclerc,Max Verstappen,Red Bull-Honda RBPT,Yes
+20,Mexico City Grand Prix,Mexico,2025-10-26,Autodromo Hermanos Rodriguez,Lando Norris,Charles Leclerc,Max Verstappen,Lando Norris,McLaren-Mercedes,No
+21,São Paulo Grand Prix,Brazil,2025-11-09,Autodromo Jose Carlos Pace,Lando Norris,Kimi Antonelli,Max Verstappen,Lando Norris,McLaren-Mercedes,Yes
+22,Las Vegas Grand Prix,United States,2025-11-22,Las Vegas Street Circuit,Max Verstappen,George Russell,Kimi Antonelli,Lando Norris,Red Bull-Honda RBPT,No
+23,Qatar Grand Prix,Qatar,2025-11-30,Lusail International Circuit,Max Verstappen,Oscar Piastri,Carlos Sainz Jr.,Oscar Piastri,Red Bull-Honda RBPT,Yes
+24,Abu Dhabi Grand Prix,UAE,2025-12-07,Yas Marina Circuit,Max Verstappen,Oscar Piastri,Lando Norris,Max Verstappen,Red Bull-Honda RBPT,No
