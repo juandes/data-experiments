@@ -1,0 +1,21 @@
+year,host_city,country,athletes,gold,silver,bronze,total_medals
+1948,London,United Kingdom,9,0,0,1,1
+1952,Helsinki,Finland,21,0,0,0,0
+1956,Melbourne,Australia,10,0,0,0,0
+1960,Rome,Italy,27,0,0,0,0
+1964,Tokyo,Japan,32,0,0,0,0
+1968,Mexico City,Mexico,58,0,0,0,0
+1972,Munich,West Germany,53,0,0,0,0
+1976,Montreal,Canada,80,0,0,1,1
+1980,Moscow,USSR,3,0,0,0,0
+1984,Los Angeles,USA,51,0,1,1,2
+1988,Seoul,South Korea,47,0,0,0,0
+1992,Barcelona,Spain,75,0,0,1,1
+1996,Atlanta,USA,69,0,0,1,1
+2000,Sydney,Australia,29,0,0,0,0
+2004,Athens,Greece,43,0,0,0,0
+2008,Beijing,China,22,0,0,0,0
+2012,London,United Kingdom,25,0,1,1,2
+2016,Rio de Janeiro,Brazil,40,1,0,0,1
+2020,Tokyo,Japan,37,1,0,0,1
+2024,Paris,France,51,0,0,2,2
