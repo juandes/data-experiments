@@ -1,0 +1,189 @@
+---
+title: "Wakaba: first month of real usage"
+subtitle: "2026-09-17 onward"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 15, fig.height = 8, out.width = "100%")
+```
+
+## Setup
+
+```{r libraries}
+suppressMessages({library(bbplot);library(jsonlite);library(dplyr);library(tidyr);library(ggplot2);library(lubridate);library(scales)})
+```
+
+## Data
+
+Filtered to answers on or after the apps' release on 2026-09-17. Earlier data is pre-release testing.
+
+```{r data}
+src <- "../daily-japanese-progress-1791844929035.json"
+tz  <- "America/Chicago"                                
+release <- "2026-09-17"                                    
+
+d <- fromJSON(src) %>%
+  mutate(t = with_tz(ymd_hms(attemptDate), tz)) %>%
+  filter(t >= ymd(release, tz = tz)) %>%
+  arrange(t)
+```
+
+## Define chart style
+
+```{r style}
+green <- "#3f8f5a"; red <- "#c8553d"; grey <- "#8a8f98"; ink <- "#22262b"
+jp <- if ("Hiragino Sans" %in% systemfonts::system_fonts()$family) "Hiragino Sans" else "sans"
+
+wakaba_theme <- theme(
+  plot.title = element_text(hjust = 0), plot.subtitle = element_text(hjust = 0, colour = "#555555"),
+  plot.title.position = "plot", plot.caption.position = "plot",
+  plot.caption = element_text(size = 15, colour = grey, hjust = 0, margin = margin(t = 12)),
+  plot.margin = unit(c(1.0, 1.5, 1.0, 1.0), "cm"),
+  axis.title.y = element_text(size = 20, angle = 90, vjust = 1, margin = margin(r = 20)),
+  axis.title.x = element_text(size = 20),
+  legend.position = "right",
+  legend.key.height = unit(0.8, "cm")
+)
+
+cap <- paste0("Wakaba, ", nrow(d), " answers since release (", format(ymd(release), "%b %d"), " - ", format(max(as_date(d$t)), "%b %d, %Y"), ")")
+save <- function(p, f, w = 15, h = 8) ggsave(f, p, width = w, height = h, dpi = 200, bg = "white", device = ragg::agg_png)
+```
++
+
+## 1. Accuracy by question type
+
+```{r chart1}
+t1 <- d %>%
+  mutate(type = ifelse(mode == "multipleChoice", "Multiple choice", "Written")) %>%
+  group_by(type) %>%
+  summarise(n = n(), acc = mean(correct), .groups = "drop")
+
+p1 <- ggplot(t1, aes(type, acc, fill = type)) +
+  geom_col(width = .55, show.legend = FALSE) +
+  geom_text(aes(label = sprintf("%.0f%%\n(n = %d)", acc * 100, n)), vjust = -.3, colour = ink, lineheight = .95, size = 7, fontface = "bold") +
+  scale_fill_manual(values = c("Multiple choice" = green, "Written" = red)) +
+  scale_y_continuous(labels = percent, limits = c(0, 1.05), expand = c(0, 0)) +
+  labs(title = "Typing the answer is much harder than picking it", subtitle = "Accuracy by question type",
+       x = NULL, y = NULL, caption = cap) +
+  bbc_style() + wakaba_theme
+save(p1, "01_accuracy_by_mode.png")
+p1
+```
+
+## 2. Response time: correct vs wrong
+
+```{r chart2}
+d2 <- d %>%
+  mutate(res = factor(ifelse(correct, "Correct", "Wrong"), c("Correct", "Wrong")))
+
+med <- d2 %>%
+  group_by(res) %>%
+  summarise(m = median(responseTime), n = n(), .groups = "drop")
+
+p2 <- ggplot(d2, aes(res, responseTime, colour = res)) +
+  geom_jitter(width = .18, alpha = .5, size = 3.2) +
+  geom_crossbar(data = med, aes(x = res, y = m, ymin = m, ymax = m), width = .5, linewidth = .9, colour = ink, inherit.aes = FALSE) +
+  scale_colour_manual(values = c(Correct = green, Wrong = red), guide = "none") +
+  scale_y_log10(breaks = c(1, 2, 5, 10, 30, 60), labels = function(x) paste0(x, "s")) +
+  labs(title = "Wrong answers take longer", subtitle = "Response time per answer (log scale); bar = median",
+       x = NULL, y = NULL, caption = cap) +
+  bbc_style() + wakaba_theme +
+  theme
+
+p2 <- p2 + geom_text(data = med, aes(x = res, y = m, label = sprintf("%.1fs", m)), nudge_x = .36, colour = ink, inherit.aes = FALSE, fontface = "bold", size = 8)
+save(p2, "02_response_time.png")
+p2
+```
+
+## 3. Most-missed kanji
+
+```{r chart3}
+t3 <- d %>% 
+  group_by(itemDisplay) %>% 
+  summarise(n = n(), miss = sum(!correct), .groups = "drop") %>%
+  filter(miss >= 2) %>% arrange(miss, n) %>% 
+  mutate(itemDisplay = factor(itemDisplay, itemDisplay))
+
+p3 <- ggplot(t3, aes(miss, itemDisplay)) +
+  geom_segment(aes(x = 0, xend = miss, yend = itemDisplay), colour = red, linewidth = 2) +
+  geom_point(colour = red, size = 7) +
+  geom_text(aes(label = sprintf("%d of %d", miss, n)), nudge_x = .15, hjust = 0, colour = "#555555", size = 7) +
+  scale_x_continuous(breaks = 0:4, limits = c(0, 4), expand = c(0, 0)) +
+  labs(title = "The kanji I keep failing", subtitle = "Items answered wrong at least twice",
+       x = NULL, y = NULL, caption = cap) +
+  bbc_style() + wakaba_theme +
+  theme(axis.text.y = element_text(family = jp, size = 36, colour = ink, margin = margin(r = 8)), panel.grid.major.x = element_line(colour = "grey90"),
+        panel.grid.major.y = element_blank())
+save(p3, "03_most_missed.png")
+p3
+```
+
+## 4. Does repetition help?
+
+```{r chart4}
+t4 <- d %>% 
+  group_by(itemID) %>%
+  mutate(seen = row_number()) %>%
+  ungroup() %>%
+  mutate(seen = pmin(seen, 4)) %>%
+  group_by(seen) %>%
+  summarise(n = n(), acc = mean(correct), .groups = "drop") %>%
+  mutate(lab = ifelse(seen == 4, "4th+", paste0(c("1st", "2nd", "3rd")[pmin(seen, 3)])))
+
+p4 <- ggplot(t4, aes(lab, acc, group = 1)) +
+  geom_line(colour = green, linewidth = 2) + geom_point(colour = green, size = 7) +
+  geom_text(aes(label = sprintf("%.0f%%", acc * 100)), vjust = -1.3, fontface = "bold", colour = ink, size = 6) +
+  geom_text(aes(y = .02, label = paste0("n = ", n)), colour = "#555555", size = 6.5) +
+  scale_y_continuous(labels = percent, limits = c(0, 1.1), breaks = seq(0, 1, .25), expand = c(0, 0)) +
+  labs(title = "Accuracy by how many times I'd seen the item",
+       x = "Times I've seen the item", y = "Accuracy (%)", caption = cap) +
+  bbc_style() + wakaba_theme
+save(p4, "04_repetition.png")
+p4
+```
+
+## 5. Activity timeline
+
+```{r chart5}
+t5 <- d %>%
+  mutate(day = as_date(t)) %>%
+  group_by(day) %>%
+  summarise(n = n(), acc = mean(correct), .groups = "drop")
+alldays <- tibble(day = seq(ymd(release), max(as_date(d$t)), by = "day")) %>%
+  left_join(t5, by = "day") %>% replace_na(list(n = 0))
+
+p5 <- ggplot(alldays, aes(day, n)) +
+  geom_col(fill = green, width = .8) +
+  geom_text(data = filter(alldays, n > 0), aes(label = sprintf("%.0f%%", acc * 100)), vjust = -.5, size = 6.5, colour = ink, fontface = "bold") +
+  scale_x_date(date_breaks = "1 week", date_labels = "%b %d", expand = c(.01, .01)) +
+  scale_y_continuous(expand = expansion(mult = c(0, .12))) +
+  labs(title = "Short bursts, not a daily routine", subtitle = "Answers per day (label = accuracy that day)",
+       x = "Date", y = "Answers per day", caption = cap) +
+  bbc_style() + wakaba_theme
+save(p5, "05_activity.png")
+p5
+```
+
+## Summary numbers
+
+```{r summary}
+sprintf("Attempts: %d", nrow(d))
+sprintf("Sessions: %d", n_distinct(d$sessionDate))
+sprintf("Number of days: %d", n_distinct(as_date(d$t)))
+sprintf("Number of items: %d", n_distinct(d$itemID))
+
+cat("accuracy", round(mean(d$correct) * 100, 1), "\n"); print(t1); print(med); print(t4)
+```
+
+## 駅: did I get it right last time?
+
+```{r}
+eki <- d %>%
+  filter(itemDisplay == "駅") %>%
+  arrange(t) %>%
+  select(t, field, mode, userAnswer, correct, responseTime)
+
+print(eki)
+cat("Missed:", sum(!eki$correct), "of", nrow(eki), sprintf("(%.0f%%)\n", 100 * mean(!eki$correct)))
+cat("Last attempt correct:", tail(eki$correct, 1), "\n")
+```
