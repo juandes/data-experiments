@@ -1,0 +1,9 @@
+character,achievement_name,achievement_unlock_pct,estimated_recruitment_among_starters_pct,optional_recruitment
+Garrus,The Archangel,35.9,89.3,no
+Mordin,The Professor,35.8,89.1,no
+Jack,The Convict,33.6,83.6,no
+Grunt,The Krogan,32.7,81.3,yes
+Thane,The Assassin,30.6,76.1,yes
+Tali,The Quarian,30.5,75.9,yes
+Samara,The Justicar,30.2,75.1,yes
+Legion,Friend or Foe,27.7,68.9,yes
