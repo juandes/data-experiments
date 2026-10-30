@@ -42,7 +42,7 @@ Example: Tali's recruitment estimate is `30.5 / 40.2 * 100 = 75.9%`.
 - Recruitment percentages are not rates among finishers. Accounts may play multiple runs, and equal rounded achievement rates do not prove identical outcomes.
 - Grunt and Legion have required story missions but optional activation (please don't leave Grunt in the tank forever). The five optional recruits can each be skipped, although story progression still requires eight squadmates.
 - **Doppelganger** can unlock with either Samara or Morinth. **No One Left Behind** covers the recruited combat squad, not every Normandy crew member. Against All Odds tracks Shepard's survival; Mission Accomplished tracks completion.
-- EA survival figures come from a separate 2021 population. The data's sample size and denominator are undisclosed. The graphic doesn't split Samara/Morinth or even mentions it.
+- EA survival figures come from a separate 2021 population. The data's sample size and denominator are undisclosed. The graphic doesn't split Samara/Morinth or even mention it.
 
 ## Sources
 
